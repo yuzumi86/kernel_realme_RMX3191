@@ -1393,7 +1393,6 @@ static kal_uint32 streaming_control(kal_bool enable)
 		write_cmos_sensor(0x0100, 0x00);
 	return ERROR_NONE;
 }
-
 static kal_uint32 check_board(void) // sala/salaA=1 nemo/sarter=2
 {
 	kal_uint32 res = 0;
