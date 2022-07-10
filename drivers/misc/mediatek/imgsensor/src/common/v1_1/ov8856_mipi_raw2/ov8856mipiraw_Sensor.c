@@ -1394,7 +1394,7 @@ static kal_uint32 streaming_control(kal_bool enable)
 	return ERROR_NONE;
 }
 
-static kal_uint32 check_board()
+static kal_uint32 check_board(void) // sala/salaA=1 nemo/sarter=2
 {
 	kal_uint32 res = 0;
 	if (is_project(20730)||is_project(20731)||is_project(20732)) {
