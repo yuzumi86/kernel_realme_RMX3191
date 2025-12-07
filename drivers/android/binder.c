@@ -6225,6 +6225,7 @@ static void binder_free_proc(struct binder_proc *proc)
 
 	BUG_ON(!list_empty(&proc->todo));
 	BUG_ON(!list_empty(&proc->delivered_death));
+
 #ifdef CONFIG_OPLUS_BINDER_STRATEGY
 	obproc_free(proc);
 #endif

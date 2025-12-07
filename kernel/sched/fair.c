@@ -9525,6 +9525,7 @@ static int detach_tasks(struct lb_env *env, struct rq_flags *rf)
 		if (!can_migrate_task(p, env))
 			goto next;
 
+
 #if defined (CONFIG_OPLUS_PREFER_SILVER) && defined (OPLUS_FEATURE_SCHED_ASSIST)
 		if (sysctl_prefer_silver && sysctl_sched_assist_enabled) {
 			if (!prefer_silver_check_ux(p) && is_max_capacity_cpu(env->dst_cpu)) {
@@ -9537,8 +9538,15 @@ static int detach_tasks(struct lb_env *env, struct rq_flags *rf)
 #if defined(OPLUS_FEATURE_SCHED_ASSIST)
 		if (should_ux_task_skip_cpu(p, env->dst_cpu))
 			goto next;
-#endif /* OPLUS_FEATURE_SCHED_ASSIST */
-		load = task_h_load(p);
+#endif  /* OPLUS_FEATURE_SCHED_ASSIST */
+		/*
+		 * Depending of the number of CPUs and tasks and the
+		 * cgroup hierarchy, task_h_load() can return a null
+		 * value. Make sure that env->imbalance decreases
+		 * otherwise detach_tasks() will stop only after
+		 * detaching up to loop_max tasks.
+		 */
+		load = max_t(unsigned long, task_h_load(p), 1);
 
 		if (sched_feat(LB_MIN) && load < 16 && !env->sd->nr_balance_failed)
 			goto next;
