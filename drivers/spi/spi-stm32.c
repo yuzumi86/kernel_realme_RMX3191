@@ -255,7 +255,7 @@ static int stm32_spi_prepare_mbr(struct stm32_spi *spi, u32 speed_hz)
 	u32 div, mbrdiv;
 
 	/* Ensure spi->clk_rate is even */
-	div = DIV_ROUND_UP(spi->clk_rate & ~0x1, speed_hz);
+	div = DIV_ROUND_CLOSEST(spi->clk_rate & ~0x1, speed_hz);
 
 	/*
 	 * SPI framework set xfer->speed_hz to master->max_speed_hz if
@@ -991,6 +991,10 @@ static int stm32_spi_transfer_one(struct spi_master *master,
 {
 	struct stm32_spi *spi = spi_master_get_devdata(master);
 	int ret;
+
+	/* Don't do anything on 0 bytes transfers */
+	if (transfer->len == 0)
+		return 0;
 
 	spi->tx_buf = transfer->tx_buf;
 	spi->rx_buf = transfer->rx_buf;
