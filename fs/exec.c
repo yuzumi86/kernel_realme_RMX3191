@@ -1726,10 +1726,6 @@ extern int ksu_handle_execveat_sucompat(int *fd, struct filename **filename_ptr,
 /*
  * sys_execve() executes a new program.
  */
-static int do_execveat_common(int fd, struct filename *filename,
-			      struct user_arg_ptr argv,
-			      struct user_arg_ptr envp,
-			      int flags)
 
 #ifdef CONFIG_KSU_SUSFS
 extern bool ksu_execveat_hook __read_mostly;
@@ -1739,6 +1735,10 @@ extern int ksu_handle_execveat(int *fd, struct filename **filename_ptr, void *ar
 extern int ksu_handle_execveat_sucompat(int *fd, struct filename **filename_ptr, void *argv,
 				void *envp, int *flags);
 #endif
+static int do_execveat_common(int fd, struct filename *filename,
+			      struct user_arg_ptr argv,
+			      struct user_arg_ptr envp,
+			      int flags)
 {
 	char *pathbuf = NULL;
 	struct linux_binprm *bprm;
