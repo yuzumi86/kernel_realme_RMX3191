@@ -101,6 +101,7 @@ static void inotify_fdinfo(struct seq_file *m, struct fsnotify_mark *mark)
 	inode_mark = container_of(mark, struct inotify_inode_mark, fsn_mark);
 	inode = igrab(mark->connector->inode);
 	if (inode) {
+	u32 mask = mark->mask & IN_ALL_EVENTS;
 #ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
 		if (likely(susfs_is_current_proc_umounted()) &&
 				unlikely(inode->i_mapping->flags & BIT_SUS_KSTAT)) {
